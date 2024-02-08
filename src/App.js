@@ -6,8 +6,7 @@ import { ZoomMtg } from "@zoom/meetingsdk";
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareWebSDK();
 
-const { ZOOM_MEETING_SDK_KEY, ZOOM_MEETING_ID, ZOOM_MEETING_PW, VERCEL_URL } =
-  process.env;
+const { REACT_APP_ZOOM_MEETING_ID, VERCEL_URL } = process.env;
 
 function randomName() {
   return "User" + Math.floor(Math.random() * 1000000);
@@ -15,9 +14,6 @@ function randomName() {
 
 function App() {
   var authEndpoint = "/api/auth";
-  var sdkKey = ZOOM_MEETING_SDK_KEY;
-  var meetingNumber = ZOOM_MEETING_ID;
-  var passWord = ZOOM_MEETING_PW;
   var role = 0;
   var userName = randomName();
   var userEmail = `${userName}@example.com`;
@@ -30,20 +26,24 @@ function App() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        meetingNumber: meetingNumber,
         role: role,
       }),
     })
       .then((res) => res.json())
       .then((response) => {
-        startMeeting(response.signature);
+        startMeeting(
+          response.signature,
+          response.sdkKey,
+          response.meetingNumber,
+          response.passWord
+        );
       })
       .catch((error) => {
         console.error(error);
       });
   }
 
-  function startMeeting(signature) {
+  function startMeeting(signature, sdkKey, meetingNumber, passWord) {
     document.getElementById("zmmtg-root").style.display = "block";
 
     ZoomMtg.init({

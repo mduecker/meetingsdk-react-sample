@@ -6,13 +6,16 @@ export default function handler(req, res) {
 
   const oHeader = { alg: "HS256", typ: "JWT" };
 
+  const { ZOOM_MEETING_SDK_KEY, ZOOM_MEETING_ID, ZOOM_MEETING_PW } =
+    process.env;
+
   const oPayload = {
-    sdkKey: process.env.ZOOM_MEETING_SDK_KEY,
-    mn: req.body.meetingNumber,
+    sdkKey: ZOOM_MEETING_SDK_KEY,
+    mn: ZOOM_MEETING_ID,
     role: req.body.role,
     iat: iat,
     exp: exp,
-    appKey: process.env.ZOOM_MEETING_SDK_KEY,
+    appKey: ZOOM_MEETING_SDK_KEY,
     tokenExp: iat + 60 * 60 * 2,
   };
 
@@ -27,5 +30,7 @@ export default function handler(req, res) {
 
   res.json({
     signature: signature,
+    sdkKey: ZOOM_MEETING_SDK_KEY,
+    passWord: ZOOM_MEETING_PW,
   });
 }
