@@ -31,6 +31,7 @@ export default function handler(req, res) {
   res.json({
     signature: signature,
     sdkKey: ZOOM_MEETING_SDK_KEY,
+    meetingNumber: ZOOM_MEETING_ID,
     passWord: ZOOM_MEETING_PW,
   });
 }
