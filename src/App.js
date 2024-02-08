@@ -14,7 +14,7 @@ function randomName() {
 }
 
 function App() {
-  var authEndpoint = "/auth";
+  var authEndpoint = "/api/auth";
   var sdkKey = ZOOM_MEETING_SDK_KEY;
   var meetingNumber = ZOOM_MEETING_ID;
   var passWord = ZOOM_MEETING_PW;
