@@ -6,7 +6,7 @@ import { ZoomMtg } from "@zoom/meetingsdk";
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareWebSDK();
 
-const { REACT_APP_ZOOM_MEETING_ID, VERCEL_URL } = process.env;
+const { VERCEL_URL } = process.env;
 
 function randomName() {
   return "User" + Math.floor(Math.random() * 1000000);
