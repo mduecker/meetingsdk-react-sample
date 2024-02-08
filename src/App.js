@@ -1,50 +1,55 @@
-import React from 'react';
+import React from "react";
 
-import './App.css';
-import { ZoomMtg } from '@zoom/meetingsdk';
+import "./App.css";
+import { ZoomMtg } from "@zoom/meetingsdk";
 
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareWebSDK();
 
-function App() {
+const { ZOOM_MEETING_SDK_KEY, ZOOM_MEETING_ID, VERCEL_URL } = process.env;
 
-  var authEndpoint = ''
-  var sdkKey = ''
-  var meetingNumber = '123456789'
-  var passWord = ''
-  var role = 0
-  var userName = 'React'
-  var userEmail = ''
-  var registrantToken = ''
-  var zakToken = ''
-  var leaveUrl = 'http://localhost:3000'
+function randomName() {
+  return "User" + Math.floor(Math.random() * 1000000);
+}
+
+function App() {
+  var authEndpoint = "/auth";
+  var sdkKey = ZOOM_MEETING_SDK_KEY;
+  var meetingNumber = ZOOM_MEETING_ID;
+  var passWord = "";
+  var role = 0;
+  var userName = randomName();
+  var userEmail = `${userName}@example.com`;
+  var leaveUrl = `https://${VERCEL_URL}/`;
 
   function getSignature(e) {
     e.preventDefault();
 
     fetch(authEndpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         meetingNumber: meetingNumber,
-        role: role
-      })
-    }).then(res => res.json())
-    .then(response => {
-      startMeeting(response.signature)
-    }).catch(error => {
-      console.error(error)
+        role: role,
+      }),
     })
+      .then((res) => res.json())
+      .then((response) => {
+        startMeeting(response.signature);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   function startMeeting(signature) {
-    document.getElementById('zmmtg-root').style.display = 'block'
+    document.getElementById("zmmtg-root").style.display = "block";
 
     ZoomMtg.init({
       leaveUrl: leaveUrl,
       patchJsMedia: true,
       success: (success) => {
-        console.log(success)
+        console.log(success);
 
         ZoomMtg.join({
           signature: signature,
@@ -53,21 +58,20 @@ function App() {
           passWord: passWord,
           userName: userName,
           userEmail: userEmail,
-          tk: registrantToken,
-          zak: zakToken,
+          // tk: registrantToken,
+          // zak: zakToken,
           success: (success) => {
-            console.log(success)
+            console.log(success);
           },
           error: (error) => {
-            console.log(error)
-          }
-        })
-
+            console.log(error);
+          },
+        });
       },
       error: (error) => {
-        console.log(error)
-      }
-    })
+        console.log(error);
+      },
+    });
   }
 
   return (
