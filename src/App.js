@@ -6,7 +6,8 @@ import { ZoomMtg } from "@zoom/meetingsdk";
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareWebSDK();
 
-const { ZOOM_MEETING_SDK_KEY, ZOOM_MEETING_ID, VERCEL_URL } = process.env;
+const { ZOOM_MEETING_SDK_KEY, ZOOM_MEETING_ID, ZOOM_MEETING_PW, VERCEL_URL } =
+  process.env;
 
 function randomName() {
   return "User" + Math.floor(Math.random() * 1000000);
@@ -16,7 +17,7 @@ function App() {
   var authEndpoint = "/auth";
   var sdkKey = ZOOM_MEETING_SDK_KEY;
   var meetingNumber = ZOOM_MEETING_ID;
-  var passWord = "";
+  var passWord = ZOOM_MEETING_PW;
   var role = 0;
   var userName = randomName();
   var userEmail = `${userName}@example.com`;
